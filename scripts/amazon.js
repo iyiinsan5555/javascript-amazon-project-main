@@ -8,6 +8,10 @@
 
 //Products is global variable
 
+import {cart} from "../data/cart.js"
+import {products} from "../data/products.js"
+
+
 let productsHTML = "";
 
 products.forEach((product) => {
@@ -89,18 +93,27 @@ document.querySelectorAll(".js-add-to-cart")
         }
       });
 
+      const selectValue = Number(button.parentElement.querySelector("select").value);
 
       if (matchingItem) {
-        matchingItem.quantity += 1;
+        matchingItem.quantity += selectValue;
       } else {
         cart.push({
         productId,
-        quantity: 1
+        quantity: selectValue
       });
       }
 
+      let cartQuantity = 0;
+
+      cart.forEach((item) => {
+         cartQuantity += item.quantity;
+      })
+
+      document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 
       console.log(cart);
 
     });
   });
+  
