@@ -4,7 +4,7 @@
 2-Generate the HTML
 3-Make it interactive
 
-*/
+*/  //Stayed at 11:56:30
 
 //Products is global variable
 
@@ -61,7 +61,7 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>`
@@ -74,3 +74,33 @@ products.forEach((product) => {
 const products_grid = document.querySelector(".js-products-grid");
 products_grid.innerHTML = productsHTML;
 
+
+document.querySelectorAll(".js-add-to-cart")
+  .forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = button.dataset.productId; //variable name changes kebab-case to camelCase
+
+      let matchingItem = undefined;
+
+      cart.forEach((item) => {
+        if (productId === item.productId) {
+          //this product is already in card so add more quantity
+          matchingItem = item;
+        }
+      });
+
+
+      if (matchingItem) {
+        matchingItem.quantity += 1;
+      } else {
+        cart.push({
+        productId,
+        quantity: 1
+      });
+      }
+
+
+      console.log(cart);
+
+    });
+  });
