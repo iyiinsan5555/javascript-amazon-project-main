@@ -1,6 +1,11 @@
 import { cart, removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 
+const today = dayjs();
+const deliveryDate = today.add(7, "days");
+
+console.log(deliveryDate.format("dddd, MMMM, D"));
+
 let cartsHTML = "";
 
 cart.forEach((cartItem) => {

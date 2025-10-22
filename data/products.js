@@ -6,7 +6,7 @@ export const products = [
     rating: {
       stars: 4.5,
       count: 87
-    },
+    }, //Stayed at 13:56:33 External Libraries
     priceCents: 1090,
     keywords: [
       "socks",
