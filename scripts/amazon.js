@@ -1,105 +1,83 @@
-/*Mainly javascript does 3 main things:
+import {cart, addToCart} from '../data/cart.js';
+import {products} from '../data/products.js';
+import {formatCurrency} from './utils/money.js';
 
-1-Save the data
-2-Generate the HTML
-3-Make it interactive
-
-*/  //Stayed at 11:56:30
-
-//Products is global variable
-
-import {cart, addToCart} from "../data/cart.js"
-import {products} from "../data/products.js"
-
-
-let productsHTML = "";
+let productsHTML = '';
 
 products.forEach((product) => {
-    const productImage = product.image;
-    const productName = product.name;
-    const productRating = product.rating;
-    const productPriceCents = product.priceCents; //Be careful it's in cents so divide by 100 when displaying
-
-    const html = `
+  productsHTML += `
     <div class="product-container">
-          <div class="product-image-container">
-            <img class="product-image"
-              src=${productImage}>
-          </div>
+      <div class="product-image-container">
+        <img class="product-image"
+          src="${product.image}">
+      </div>
 
-          <div class="product-name limit-text-to-2-lines">
-            ${productName}
-          </div>
+      <div class="product-name limit-text-to-2-lines">
+        ${product.name}
+      </div>
 
-          <div class="product-rating-container">
-            <img class="product-rating-stars"
-              src="images/ratings/rating-${productRating.stars * 10}.png">
-            <div class="product-rating-count link-primary">
-              ${productRating.count}
-            </div>
-          </div>
+      <div class="product-rating-container">
+        <img class="product-rating-stars"
+          src="${product.getStarsUrl()}">
+        <div class="product-rating-count link-primary">
+          ${product.rating.count}
+        </div>
+      </div>
 
-          <div class="product-price">
-            $${(productPriceCents / 100).toFixed(2)}
-          </div>
+      <div class="product-price">
+        ${product.getPrice()}
+      </div>
 
-          <div class="product-quantity-container">
-            <select>
-              <option selected value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </div>
+      <div class="product-quantity-container">
+        <select>
+          <option selected value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
 
-          <div class="product-spacer"></div>
+      ${product.extraInfoHTML()}
 
-          <div class="added-to-cart">
-            <img src="images/icons/checkmark.png">
-            Added
-          </div>
+      <div class="product-spacer"></div>
 
-          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
-            Add to Cart
-          </button>
-        </div>`
+      <div class="added-to-cart">
+        <img src="images/icons/checkmark.png">
+        Added
+      </div>
 
-        productsHTML += html
-        
+      <button class="add-to-cart-button button-primary js-add-to-cart"
+      data-product-id="${product.id}">
+        Add to Cart
+      </button>
+    </div>
+  `;
 });
 
-
-const products_grid = document.querySelector(".js-products-grid");
-products_grid.innerHTML = productsHTML;
-
+document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
 function updateCartQuantity() {
   let cartQuantity = 0;
 
   cart.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
-  })
+  });
 
-  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-};
+  document.querySelector('.js-cart-quantity')
+    .innerHTML = cartQuantity;
+}
 
-document.querySelectorAll(".js-add-to-cart")
+document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
-    button.addEventListener("click", () => {
-      const productId = button.dataset.productId; //variable name changes kebab-case to camelCase
-
-      addToCart(productId, button);
-
-      updateCartQuantity()
-
-      console.log(cart);
-
+    button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+      addToCart(productId);
+      updateCartQuantity();
     });
   });
-  
